@@ -25,9 +25,13 @@ func main() {
 	handlers.NewHandlers(repo)
 	render.NewTemplates(&app)
 
-	http.HandleFunc("/", handlers.Repo.Home)
-	http.HandleFunc("/about", handlers.Repo.About)
-
 	fmt.Println("Listening on port 8080")
-	_ = http.ListenAndServe(":8080", nil)
+
+	srv := &http.Server{
+		Addr:    ":8080",
+		Handler: routes(&app),
+	}
+
+	err = srv.ListenAndServe()
+	log.Fatal(err)
 }
