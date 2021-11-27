@@ -8,6 +8,22 @@
         <p>new</p>
 
         <p>This came from the template: {{index .StringMap "text"}}</p>
+
+        <p>
+          {{if ne (index .StringMap "remoteIP") ""}}
+            Your IP address is {{index .StringMap "remoteIP"}}
+            {{else}}
+            I don't know your IP Address
+            {{end}}
+        </p>
+
+        <ul>
+          <li>Georgia (IN)</li>
+          <li>OSU vs Michigan Winner</li>
+          <li>OU vs OkSt Winner?</li>
+          <li>Cincy? Bama?</li>
+        </ul>
+        <img src="/static/chess.jpg">
       </div>
     </div>
   </div>
