@@ -1,5 +1,7 @@
 package models
 
+import "github.com/achristie/udemy-modern-go/forms"
+
 type TemplateData struct {
 	StringMap map[string]string
 	IntMap    map[string]int
@@ -9,4 +11,12 @@ type TemplateData struct {
 	Flash     string
 	Warning   string
 	Error     string
+	Form 			*forms.Form
+}
+
+type Reservation struct {
+	FirstName string
+	LastName string
+	Email string
+	Phone string
 }
