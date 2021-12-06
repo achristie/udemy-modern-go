@@ -89,31 +89,31 @@ func TestForm_MinLength(t *testing.T) {
 	}
 }
 
-func TestForm_IsEmail(t *testing.T) {
-	r := httptest.NewRequest("POST", "/whatever", nil)
-	form := New(r.PostForm)
+// func TestForm_IsEmail(t *testing.T) {
+// 	r := httptest.NewRequest("POST", "/whatever", nil)
+// 	form := New(r.PostForm)
 
-	form.IsEmail("x")
-	if form.Valid() {
-		t.Error("form shows valid email for non-existent field")
-	}
+// 	form.IsEmail("x")
+// 	if form.Valid() {
+// 		t.Error("form shows valid email for non-existent field")
+// 	}
 
-	postedValues := url.Values{}
-	postedValues.Add("email", "me@here.com")
-	form = New(postedValues)
+// 	postedValues := url.Values{}
+// 	postedValues.Add("email", "me@here.com")
+// 	form = New(postedValues)
 
-	form.IsEmail("email")
-	if !form.Valid() {
-		t.Error("got invalid email when we should not have")
-	}
+// 	form.IsEmail("email")
+// 	if !form.Valid() {
+// 		t.Error("got invalid email when we should not have")
+// 	}
 
-	postedValues = url.Values{}
-	postedValues.Add("email", "x")
-	form = New(postedValues)
+// 	postedValues = url.Values{}
+// 	postedValues.Add("email", "x")
+// 	form = New(postedValues)
 
-	form.IsEmail("email")
-	if form.Valid() {
-		t.Error("got valid for an invalid email")
-	}
+// 	form.IsEmail("email")
+// 	if form.Valid() {
+// 		t.Error("got valid for an invalid email")
+// 	}
 
-}
+// }

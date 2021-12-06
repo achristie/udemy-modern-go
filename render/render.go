@@ -33,11 +33,15 @@ func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateDa
 
 func RenderTemplate(w http.ResponseWriter, r *http.Request, tmpl string, td *models.TemplateData) error {
 	var tc map[string]*template.Template
+	var err error
 
 	if app.UseCache {
 		tc = app.TemplateCache
 	} else {
-		tc, _ = CreateTemplateCache()
+		tc, err = CreateTemplateCache()
+		if err != nil {
+			return err
+		}
 	}
 
 	t, ok := tc[tmpl]
@@ -50,7 +54,7 @@ func RenderTemplate(w http.ResponseWriter, r *http.Request, tmpl string, td *mod
 	td = AddDefaultData(td, r)
 	_ = t.Execute(buf, td)
 
-	_, err := buf.WriteTo(w)
+	_, err = buf.WriteTo(w)
 	if err != nil {
 		fmt.Println("error writing template to browser", err)
 		return err
@@ -60,8 +64,8 @@ func RenderTemplate(w http.ResponseWriter, r *http.Request, tmpl string, td *mod
 
 func CreateTemplateCache() (map[string]*template.Template, error) {
 	cache := map[string]*template.Template{}
-
-	pages, err := filepath.Glob(fmt.Sprintf("%s/*.page.tmpl", pathToTemplates))
+	str := fmt.Sprintf("%s/*.page.tmpl", pathToTemplates)
+	pages, err := filepath.Glob(str)
 	if err != nil {
 		return cache, err
 	}
@@ -73,12 +77,12 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 			return cache, err
 		}
 
-		matches, err := filepath.Glob(fmt.Sprintf("%s/*.page.tmpl", pathToTemplates))
+		matches, err := filepath.Glob(fmt.Sprintf("%s/*.layout.tmpl", pathToTemplates))
 		if err != nil {
 			return cache, err
 		}
 		if len(matches) > 0 {
-			ts, err = ts.ParseGlob(fmt.Sprintf("%s/*.page.tmpl", pathToTemplates))
+			ts, err = ts.ParseGlob(fmt.Sprintf("%s/*.layout.tmpl", pathToTemplates))
 			if err != nil {
 				return cache, err
 			}
